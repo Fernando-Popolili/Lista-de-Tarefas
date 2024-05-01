@@ -1,3 +1,5 @@
+/* Reset da pagina */
+
 body {
   box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
@@ -6,11 +8,77 @@ body {
   background-size: cover;
 }
 
+
+/* Colocansdo conteudo principal centralizado e espaçado  */
 .app{
   max-width: 600px;
   margin: 0 auto 300px;
-  background-color: white;
+  background-color: rgb(231, 231, 231);
   padding: 20px 30px;
   border-radius: 10px;
+}
+
+/* Configuração e estilização geral do button */
+button{
+  background-color: #333974;
+  color: #fff;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  opacity: .8;
+  transition: 0.3s;
+  margin-right: 10px;
+}
+
+button:hover{
+  opacity: 1;
+}
+
+
+.todo-list{
+  margin-bottom: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #555;
+}
+
+.todo {
+  background-color: #fff;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+
+/* Botao de completar tarefa */
+.BTNcompletar{
+  background-color: #5cb85c;
+}
+
+
+/* Botao de excluir tarefa */
+.BTNexcluir{
+  background-color: #d9534f;
+}
+
+/* Começando estilização do formulario para adicionar tarefas */
+
+.todo-form{
+  padding-bottom: 1.5rem;
+}
+
+/* Deixando cada input um em cada linha e fazendo estilização*/
+
+input, select{
+  padding: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 3px;
+  width: 100%;
+
 }
 

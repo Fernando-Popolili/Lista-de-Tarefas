@@ -1,15 +1,17 @@
 import React from 'react'
 
-const Todo = ({todo}) => {
+const Todo = ({todo, funcaoRemover}) => {
   return (
     <div className="todo">
         <div className="content">
             <p>{todo.text}</p>
             <p className="categoria">({todo.categoria})</p>
+            
         </div>
         <div>
-            <button>Completar</button>
-            <button>X</button>
+            <button className='BTNcompletar'>Completar</button>
+            <button className='BTNexcluir' onClick={()=> funcaoRemover(todo.id)}>X</button>
+            
         </div>
     </div>
   )
