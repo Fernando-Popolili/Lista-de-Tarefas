@@ -1,60 +1,88 @@
-import './App.css'
-import { useState } from "react";
+import './App.css';
+import { useState, useEffect } from "react";
+
 import Todo from './components/Todo';
 import TodoForm from './components/TodoForm';
+import Busca from './components/Busca';
 
 function App() {
-  // SETTODOS = INSERIR OS DADOS
-    const [todos, setTodos] = useState([
-    {
-      id: 1,
-      text:"Criar funcionalidade X no Sistema",
-      categoria: "Trabalho",
-      completo: false,
-    },
-    {
-      id: 2,
-      text:"Ir para a academia",
-      categoria: "Pessoal",
-      completo: false,
-    },
+  // Carregar dados do localStorage na inicialização
+  const [todos, setTodos] = useState(() => {
 
-  ]);
+    //Busca a string "todos" no localStorage.
+    //Se encontrado, converte a string JSON em um objeto JavaScript.
+    //Se não encontrado, inicializa todos com um array de objetos de exemplo.
+    const savedTodos = localStorage.getItem("todos");
+    return savedTodos ? JSON.parse(savedTodos) : [
+      {
+        id: 1,
+        text: "Exemplo",
+        categoria: "Exemplo",
+        completo: false,
+      }
+      
+    ];
+  });
 
-  //Fuunção para adiconar novos itens na lista
+  const [busca, setBusca] = useState("");
+
+  // Função para adicionar novos itens na lista
   const addTodo = (text, categoria) => {
-    const newTodo = [...todos, {
-      id:Math.floor(Math.random() * 1000), text, categoria, completo:false,
-    }];
-    //Substitui os dados antigos do array pelo novo array(newTodo)
-    setTodos(newTodo)
+    const newTodo = [
+      ...todos,
+      {
+        id: Math.floor(Math.random() * 1000),
+        text,
+        categoria,
+        completo: false,
+      },
+    ];
+    // Atualiza a lista
+    setTodos(newTodo);
+    // Atualiza o localStorage
+    localStorage.setItem("todos", JSON.stringify(newTodo));
   };
 
+  // Função para remover um item da lista
+  const funcaoRemover = (id) => {
+    const newTodos = todos.filter((todo) => todo.id !== id);
+    // Atualizando a lista
+    setTodos(newTodos);
+    // Atualiza o localStorage
+    localStorage.setItem("todos", JSON.stringify(newTodos));
+  };
 
-  //Função para adicionar no botao remover
-  const funcaoRemover = (id) =>{
-    const newTodos = [...todos]
-    //aqueles diferentes do id informado retornará a lista e o outro será excluido
-    const filterTodos = newTodos.filter(todo => todo.id !== id ? todo : null);
-    setTodos(filterTodos)
-  }
+  // Função para completar atividades
+  const completarAtividade = (id) => {
+    const newTodos = todos.map((todo) =>
+      todo.id === id ? { ...todo, completo: !todo.completo } : todo
+    );
+    setTodos(newTodos);
+    // Atualiza o localStorage
+    localStorage.setItem("todos", JSON.stringify(newTodos));
+  };
 
   return (
     <div className="app">
       <h1>Lista de Tarefas</h1>
+      <Busca busca={busca} setBusca={setBusca} />
       <div className="todo-list">
-        {/* Percorrer o ARRAY USANDO O MAP*/}
-        {todos.map((todo)=>(
-          // PUXANDO O COMPONENT TODO.JSX
-          <Todo key={todo.id} todo={todo} funcaoRemover = {funcaoRemover} />
-          
-         
-        ))}
+        {todos
+          .filter((todo) =>
+            todo.text.toLowerCase().includes(busca.toLowerCase())
+          )
+          .map((todo) => (
+            <Todo
+              key={todo.id}
+              todo={todo}
+              funcaoRemover={funcaoRemover}
+              completarAtividade={completarAtividade}
+            />
+          ))}
       </div>
-          {/* PUXANDO O COMPONENTE DO FORMULARIO */}
-      <TodoForm addTodo={addTodo}/>
+      <TodoForm addTodo={addTodo} />
     </div>
   );
-};
+}
 
-export default App
+export default App;
